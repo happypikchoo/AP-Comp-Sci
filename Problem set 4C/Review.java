@@ -186,21 +186,28 @@ public class Review {
     }
   }
 
-  public static String fakeReview(String fileName) {
+  public static String fakeReview(String fileName, boolean pos) {
     String txt = textToString(fileName);
     String ans = "";
+
 
     while (txt.indexOf("*") != -1) {
       int index_start = txt.indexOf("*");
       System.out.println(index_start);
       ans = "";
 
-      if(txt.indexOf(" ", index_start+1)!=-1) {
+      if(txt.indexOf(" ", index_start+1)!=-1 && pos == true) {
         int index_end = txt.indexOf(" ", index_start + 1);
         ans += txt.substring(0, index_start);
-        ans += randomAdjective();
+        ans += randomPositiveAdj();
+        ans += txt.substring(index_end);
+      }  else if(txt.indexOf(" ", index_start+1)!=-1 && pos == false) {
+        int index_end = txt.indexOf(" ", index_start + 1);
+        ans += txt.substring(0, index_start);
+        ans += randomNegativeAdj();
         ans += txt.substring(index_end);
       }
+
 
       //txt = txt.substring(txt.indexOf(" ", index_start+1)); why??
       txt = ans;
