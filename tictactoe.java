@@ -176,7 +176,7 @@ public class tictactoe {
             if (cont.equals("Y")) {
                 gamestart();
             } else if (cont.equals("N")) {
-
+                System.exit(0);
             }
         }
 
