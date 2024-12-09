@@ -6,17 +6,22 @@ public class tictactoe {
         }
         //start game========================================================================================
         public static void gamestart() {
+            //Makes an empty 3x3 2D Array
             String[][] grid = new String[3][3];
 
+            //counts round #
             int round = 1;
+            //Variable to check if X is making or move or O
             boolean player1 = true;
+            //Checks if game has ended or not
             boolean gameover = false;
 
             while (!gameover) {
+                //Display the round #
                 System.out.println("Round: "+ round);
-                //prints an empty board
+                //prints board
                 printboard(grid);
-                //asks the user to input placement
+                //asks the user to input their choice
                 quest(player1, grid);
                 //check if there's a win
                 win(grid, gameover);
@@ -31,7 +36,7 @@ public class tictactoe {
             }
         }
 
-        //makes an empty tic tac toe board with null============================================
+        //makes an empty tic tac toe board============================================
         public static void printboard (String[][] grid) {
             for (int i = 0; i<grid.length; i++) {
                 for (int j = 0; j < grid[0].length; j++) {
@@ -45,10 +50,10 @@ public class tictactoe {
             }
         }
 
-        //check if win========================================================================================
+        //check if someone wins========================================================================================
         public static void win(String[][] grid, boolean gameover) {
         Scanner input = new Scanner(System.in);
-        //checking horizontal wins ========================================================================================
+        //checking row wins ========================================================================================
             for (int i = 0; i<grid.length; i++) {
                 //if X wins with a row ========================================================================================
                 if (grid[i][0] != null && grid[i][0].equals("[X]") &&
@@ -60,7 +65,7 @@ public class tictactoe {
                     //Play again or no ========================================================================================
                     playagain();
                 //if 0 wins with a row =======================================================================================
-                } else if (grid[i][0] != null && grid[i][0].equals("[0]") &&
+                 } else if (grid[i][0] != null && grid[i][0].equals("[0]") &&
                         grid[i][1] != null && grid[i][1].equals("[0]") &&
                         grid[i][2] != null && grid[i][2].equals("[0]")) {
                     gameover = true;
@@ -70,7 +75,7 @@ public class tictactoe {
                     playagain();
             }
 
-         //checking vertical wins ========================================================================================
+         //checking column wins ========================================================================================
             for (int j = 0; j<grid[0].length; j++) {
                 //Check if X wins with a column ========================================================================================
                 if (grid[0][j] != null && grid[0][j].equals("[X]") &&
@@ -94,13 +99,17 @@ public class tictactoe {
                 }
             }
         //checking diagonal wins ========================================================================================
-            if (grid[0][0].equals("[X]") && grid[1][1].equals("[X]") && grid[2][2].equals("[X]")) {
+            if (grid[0][0] != null && grid[0][0].equals("[X]")
+                    && grid[1][1] != null && grid[1][1].equals("[X]")
+                    && grid[2][2] != null && grid[2][2].equals("[X]")) {
                 gameover = true;
                 System.out.println("Player 1 Wins!");
                 printboard(grid);
                 //Play again or no ========================================================================================
                 playagain();
-            } else if (grid[0][0].equals("[0]") && grid[1][1].equals("[0]") && grid[2][2].equals("[0]")) {
+            } else if (grid[0][0] != null && grid[0][0].equals("[0]")
+                    && grid[1][1] != null && grid[1][1].equals("[0]")
+                    && grid[2][2] != null && grid[2][2].equals("[0]")) {
                 gameover = true;
                 System.out.println("Player 2 Wins!");
                 printboard(grid);
@@ -109,35 +118,65 @@ public class tictactoe {
             }
         }
 
-        //asking the user to input their placement========================================================================================
+        //asking the user to input their choice========================================================================================
         public static void quest(boolean turn, String[][] grid) {
+        //variable to help check if the tictactoe spot has already been taken
+        boolean repeat = true;
             Scanner input = new Scanner(System.in);
             //check if it is X's or O's turn ========================================================================================
             if (turn == true) {
-                System.out.println("X, make your move(row,col):");
-                String ans1 = input.nextLine();
-                //converts the user's answers to places on the tictactoe board========================================================================================
-                int x1 = Integer.parseInt(ans1.substring(0, ans1.indexOf(",")));
-                int y1 = Integer.parseInt(ans1.substring(ans1.indexOf(",")+1));
-                grid[x1][y1] = "[X]";
+                while(repeat) {
+                    System.out.println("X, make your move(row,col):");
+                    String ans1 = input.nextLine();
+                    //converts the user's answers to places on the tictactoe board========================================================================================
+                    int x1 = Integer.parseInt(ans1.substring(0, ans1.indexOf(",")));
+                    int y1 = Integer.parseInt(ans1.substring(ans1.indexOf(",") + 1));
+
+                    //Checking if the user inputs an "out of bounds" move
+                    if (x1 >= 0 && x1 < 3 && y1 >= 0 && y1 < 3) {
+                        //if there is nothing inside the spot, then fill it with X and the while loop stops
+                        if (grid[x1][y1] == null) {
+                            grid[x1][y1] = "[X]";
+                            repeat = false;
+                        } else {
+                            System.out.println("That spot is already taken. Try again.");
+                        }
+                    } else {
+                        System.out.println("Invalid input. Please enter values between 0 and 2 for row and column.");
+                    }
+                }
             } else if (turn == false) {
-                System.out.println("0, make your move(row,col):");
-                String ans2 = input.nextLine();
-                //converts the user's answers to places on the tictactoe board========================================================================================
-                int x2 = Integer.parseInt(ans2.substring(0, ans2.indexOf(",")));
-                int y2 = Integer.parseInt(ans2.substring(ans2.indexOf(",")+1));
-                grid[x2][y2] = "[0]";
+                //same process as above
+                while(repeat) {
+                    System.out.println("0, make your move(row,col):");
+                    String ans2 = input.nextLine();
+                    int x2 = Integer.parseInt(ans2.substring(0, ans2.indexOf(",")));
+                    int y2 = Integer.parseInt(ans2.substring(ans2.indexOf(",") + 1));
+
+                    if (x2 >= 0 && x2 < 3 && y2 >= 0 && y2 < 3) {
+                        if (grid[x2][y2] == null) {
+                            grid[x2][y2] = "[0]";
+                            repeat = false;
+                        } else {
+                            System.out.println("That spot is already taken. Try again.");
+                        }
+                    } else {
+                        System.out.println("Invalid input. Please enter values between 0 and 2 for row and column.");
+                    }
+                }
             }
 
         }
 
+        //Asks user if they want to play again========================================================================================
         public static void playagain() {
-
         Scanner input = new Scanner(System.in);
             System.out.println("Play Again Y/N");
             String cont = input.nextLine();
             if (cont.equals("Y")) {
                 gamestart();
+            } else if (cont.equals("N")) {
+
             }
         }
 
