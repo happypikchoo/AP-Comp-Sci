@@ -95,7 +95,7 @@ public class CharMatrix
      */
     public int countInRow(int row) {
         int count = 0;
-        for (int i = 0; i <= row; i++) {
+        for (int i = 0; i < m[row].length; i++) {
            if (m[row][i] != ' ') {
                count++;
            }
@@ -108,8 +108,8 @@ public class CharMatrix
      */
     public int countInCol(int col) {
         int count = 0;
-        for (int i = 0; i <= col; i++) {
-            if (m[col][i] != ' ') {
+        for (int i = 0; i < m.length; i++) {
+            if (m[i][col] != ' ') {
                 count++;
             }
         }
