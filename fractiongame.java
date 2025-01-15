@@ -1,5 +1,6 @@
 import java.util.*;
 public class fractiongame {
+    private static int score = 0;
     public static void main(String[] args) {
         //run the game
         game();
@@ -10,7 +11,7 @@ public class fractiongame {
         //boolean to know when game is going on or is going to end
         boolean start = true;
         //keep track of the round number
-        int rounds = 1;
+        int rounds = 0;
         //title
         System.out.println("Let the Fraction Quiz Begin. Answers should be in lowest terms. Good luck!");
 
@@ -21,12 +22,10 @@ public class fractiongame {
 
     //question method
     public static void questions(boolean start, int rounds) {
-        //keep track of score
-        int score = 0;
         //starting the questions
         while (start) {
             //see method description
-            randomfrac(rounds, score);
+            randomfrac(rounds);
             System.out.println();
             //add 1 to the round number each time
             rounds++;
@@ -37,7 +36,7 @@ public class fractiongame {
         return new fraction((int) (Math.random() * 10+1) , (int) (Math.random()*10+1));
     }
         //randomizing the fractions, finding the answer to the operation being performed
-        public static void randomfrac(int round, int score) {
+        public static void randomfrac(int round) {
             Scanner input = new Scanner(System.in);
 
             //fraction object to store the answer later on
@@ -74,16 +73,16 @@ public class fractiongame {
             String response = input.nextLine();
 
             //checks if question is correct
-            check(answer, response, round, score);
+            check(answer, response, round);
 
         }
 
 
     //check if user's answer is correct or if they want to exit game
-    public static void check(fraction answer, String b, int round, int score) {
-        fraction scorekeeper = new fraction(score, round);
+    public static void check(fraction answer, String b, int round) {
         //first check if they want to quit
         if (b.equals("quit")) {
+            fraction scorekeeper = new fraction(score, round);
             System.out.println();
             System.out.println("Your win/loss ratio was "+ score + "/" + round + ", for a score of " + (int)(scorekeeper.toDouble()*100) + " percent!");
             System.exit(0);
@@ -92,6 +91,7 @@ public class fractiongame {
         fraction response = new fraction(b);
         //check if the answer is correct
         if (answer.getNum() == response.getNum() && answer.getDenom() == response.getDenom()) {
+            score++;
             System.out.println("Correct!");
         } else {
             System.out.println("Wrong, the answer was " + answer);
